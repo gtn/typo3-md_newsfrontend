@@ -14,12 +14,31 @@
 
                 <div class="row">
                     <f:for each="{pagination.paginator.paginatedItems}" as="newsItem" iteration="i">
-                        <div class="col-sm-8 {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
+                        <div class="col-sm-7 {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
                             {newsItem.title}
                         </div>
-                        <div class="col-sm-4 text-right {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
-                            <f:link.action action="edit" arguments="{news : newsItem}" class="mr-3" title="{f:translate(key: 'edit')}: {newsItem.title}"><i class="fas fa-pencil-alt"></i> <f:translate key="edit" /></f:link.action>
-                            <f:link.action action="delete" arguments="{news : newsItem}" class="text-danger delete" additionalAttributes="{data-toggle: 'modal', data-target: '#deleteModal', data-bs-toggle: 'modal', data-bs-target: '#deleteModal'}" title="{f:translate(key: 'delete')}: {newsItem.title}"><i class="fas fa-trash-alt"></i> <f:translate key="delete" /></f:link.action>
+                        <div class="col-sm-2">
+                            <f:if condition="{newsItem.editable}">
+                                <f:then>
+                                    Entwurf
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{newsItem.hidden}">
+                                        <f:then>
+                                            eingereicht
+                                        </f:then>
+                                        <f:else>
+                                            veröffentlicht
+                                        </f:else>
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+                        </div>
+                        <div class="col-sm-3 text-right {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
+                            <f:if condition="{newsItem.editable}">
+                                <f:link.action action="edit" arguments="{news : newsItem}" class="mr-3" title="{f:translate(key: 'edit')}: {newsItem.title}"><i class="fas fa-pencil-alt"></i> bearbeiten</f:link.action>
+                                <f:link.action action="delete" arguments="{news : newsItem}" class="text-danger delete" additionalAttributes="{data-toggle: 'modal', data-target: '#deleteModal', data-bs-toggle: 'modal', data-bs-target: '#deleteModal'}" title="{f:translate(key: 'delete')}: {newsItem.title}"><i class="fas fa-trash-alt"></i> <f:translate key="delete" /></f:link.action>
+                            </f:if>
                         </div>
                     </f:for>
                 </div>

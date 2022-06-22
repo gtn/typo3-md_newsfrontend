@@ -43,7 +43,7 @@ plugin.tx_mdnewsfrontend_newsfe {
     tinymce = 1
 
     # cat=plugin.tx_mdnewsfrontend_newsfe/e2; type=string; label=Language for tinymce
-    tinymceLang = en
+    tinymceLang = de
 
     # cat=plugin.tx_mdnewsfrontend_newsfe/f1; type=string; label=Format of input for field datetime
     formatDatetime = d.m.Y H:i
@@ -52,7 +52,7 @@ plugin.tx_mdnewsfrontend_newsfe {
     formatArchive = d.m.Y
 
     # cat=plugin.tx_mdnewsfrontend_newsfe/h1; type=boolean; label=Show entries outside of startTS and or stopTS in list
-    allowNotEnabledNews = 0
+    allowNotEnabledNews = 1
 
     # cat=plugin.tx_mdnewsfrontend_newsfe/i1; type=string; label=Paginate configuration
     paginate {

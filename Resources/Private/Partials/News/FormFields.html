@@ -35,10 +35,10 @@
             <label for="falMedia">
                 <f:translate key="image" />({settings.allowed_falMedia}{f:if(condition:'{settings.allowed_falMedia_size}',then:', {f:translate(key: \'image_max_filesize\', arguments: {0: \'{settings.allowed_falMedia_size}\'})}')})
             </label>
-            <f:form.upload 
-                name="falMedia" 
-                id="falMedia" 
-                class="form-control-file" 
+            <f:form.upload
+                name="falMedia"
+                id="falMedia"
+                class="form-control-file"
                 additionalAttributes="{f:if(condition:'{settings.allowed_falMedia_size}',then:'{data-parsley-trigger:\'change focusout\', data-parsley-max-file-size:\'{settings.allowed_falMedia_size}\'}')}" />
 
             <f:if condition="{news.firstFalMedia}">
@@ -63,9 +63,9 @@
         <div class="form-group">
             <label for="showinpreview"><f:translate key="image_showinpreview" /></label>
 
-            <f:form.select 
-                name="falMedia[showinpreview]" 
-                options="{showinpreviewOptions}" 
+            <f:form.select
+                name="falMedia[showinpreview]"
+                options="{showinpreviewOptions}"
                 value="{news.firstFalMedia.showinpreview}"
                 id="showinpreview"
                 class="form-control" />
@@ -74,14 +74,14 @@
 
     <fieldset class="form-group border p-3">
         <legend><f:translate key="document_legend" /></legend>
-        
+
         <div class="form-group">
             <label for="falRelatedFiles">
                 <f:translate key="document" /> ({settings.allowed_falRelatedFiles}{f:if(condition:'{settings.allowed_falRelatedFiles_size}',then:', {f:translate(key: \'document_max_filesize\', arguments: {0: \'{settings.allowed_falRelatedFiles_size}\'})}')})
             </label>
-            <f:form.upload 
-                name="falRelatedFiles" 
-                id="falRelatedFiles" 
+            <f:form.upload
+                name="falRelatedFiles"
+                id="falRelatedFiles"
                 class="form-control-file"
                 additionalAttributes="{f:if(condition:'{settings.allowed_falRelatedFiles_size}',then:'{data-parsley-trigger:\'change focusout\', data-parsley-max-file-size:\'{settings.allowed_falRelatedFiles_size}\'}')}" />
 
@@ -112,10 +112,10 @@
     <div class="form-group">
         <label for="categories"><f:translate key="categories" /></label>
 
-        <f:form.select 
-            property="categories" 
-            options="{categories}" 
-            optionValueField="uid" 
+        <f:form.select
+            property="categories"
+            options="{categories}"
+            optionValueField="uid"
             optionLabelField="title"
             id="categories"
             class="form-control"
@@ -123,52 +123,61 @@
             size="3" />
     </div>
 
-    <div class="form-group">
-        <label for="archive"><f:translate key="archive" /></label>
-        <f:form.textfield
-                property="archive"
-                value="{news.archive -> f:format.date(format: 'd.m.Y')}"
-                id="archive"
-                class="form-control flatpickr"
-                additionalAttributes="{placeholder:'DD.MM.YYYY'}" />
-    </div>
+    <fieldset class="form-group border p-3">
+        <legend>Related Link</legend>
+
+        <div class="form-group">
+            <label>Link 1 Url</label>
+            <f:form.textfield
+                name="related_links[0][uri]"
+                value="{news.relatedLinks.0.uri}"
+                class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Link 1 Titel</label>
+            <f:form.textfield
+                name="related_links[0][title]"
+                value="{news.relatedLinks.0.title}"
+                class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Link 1 Beschreibung</label>
+            <f:form.textfield
+                name="related_links[0][description]"
+                value="{news.relatedLinks.0.description}"
+                class="form-control" />
+        </div>
+
+    </fieldset>
 
     <fieldset class="form-group border p-3">
-        <legend><f:translate key="metadata_legend" /></legend>
+        <legend>Related Link</legend>
 
         <div class="form-group">
-            <label for="author"><f:translate key="metadata_author" /></label>
+            <label>Link 2 Url</label>
             <f:form.textfield
-                    property="author"
-                    value="{user.name}"
-                    id="author"
-                    class="form-control" />
+                name="related_links[1][uri]"
+                value="{news.relatedLinks.1.uri}"
+                class="form-control" />
+        </div>
+
+
+        <div class="form-group">
+            <label>Link 2 Titel</label>
+            <f:form.textfield
+                name="related_links[1][title]"
+                value="{news.relatedLinks.1.title}"
+                class="form-control" />
         </div>
 
         <div class="form-group">
-            <label for="authorEmail"><f:translate key="metadata_authorEmail" /></label>
+            <label>Link 2 Beschreibung</label>
             <f:form.textfield
-                    property="authorEmail"
-                    value="{user.email}"
-                    id="authorEmail"
-                    class="form-control" />
-        </div>
-
-        <div class="form-group">
-            <label for="keywords"><f:translate key="metadata_keywords" /></label>
-            <f:form.textfield
-                    property="keywords"
-                    id="keywords"
-                    class="form-control" />
-        </div>
-
-        <div class="form-group">
-            <label for="description"><f:translate key="metadata_description" /></label>
-            <f:form.textarea
-                property="description"
-                id="description"
-                class="form-control"
-                rows="2" />
+                name="related_links[1][description]"
+                value="{news.relatedLinks.1.description}"
+                class="form-control" />
         </div>
 
     </fieldset>

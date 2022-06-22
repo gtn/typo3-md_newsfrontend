@@ -30,6 +30,11 @@ class News extends \GeorgRinger\News\Domain\Model\News
     protected $txMdNewsfrontendFeuser = null;
 
     /**
+     * @var int
+     */
+    protected $txMdNewsfrontendSubmittime = 0;
+
+    /**
      * Returns the txMdNewsfrontendFeuser
      *
      * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $txMdNewsfrontendFeuser
@@ -48,6 +53,32 @@ class News extends \GeorgRinger\News\Domain\Model\News
     public function setTxMdNewsfrontendFeuser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $txMdNewsfrontendFeuser)
     {
         $this->txMdNewsfrontendFeuser = $txMdNewsfrontendFeuser;
+    }
+
+    /**
+     * Returns the txMdNewsfrontendSubmittime
+     *
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $txMdNewsfrontendSubmittime
+     */
+    public function getTxMdNewsfrontendSubmittime()
+    {
+        return $this->txMdNewsfrontendSubmittime;
+    }
+
+    /**
+     * Sets the txMdNewsfrontendSubmittime
+     *
+     * @param int $txMdNewsfrontendSubmittime
+     * @return void
+     */
+    public function setTxMdNewsfrontendSubmittime($txMdNewsfrontendSubmittime)
+    {
+        $this->txMdNewsfrontendSubmittime = $txMdNewsfrontendSubmittime;
+    }
+
+    public function isEditable()
+    {
+        return $this->txMdNewsfrontendSubmittime == 0 && $this->getHidden();
     }
 
     /**

@@ -170,7 +170,7 @@ class BaseController extends ActionController
      */
     protected function checkAccess(News $newsRecord)
     {
-        if ($newsRecord->getTxMdNewsfrontendFeuser()->getUid() != $this->feuserUid) {
+        if ($newsRecord->getTxMdNewsfrontendFeuser()->getUid() != $this->feuserUid || !$newsRecord->isEditable()) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('controller.access_error', 'md_newsfrontend'),
                 '',

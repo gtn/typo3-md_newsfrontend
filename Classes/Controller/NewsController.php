@@ -16,6 +16,8 @@ namespace Mediadreams\MdNewsfrontend\Controller;
  */
 
 use DateTime;
+use GeorgRinger\News\Domain\Model\Link;
+use GeorgRinger\News\Domain\Repository\LinkRepository;
 use Mediadreams\MdNewsfrontend\Domain\Model\News;
 use Mediadreams\MdNewsfrontend\Event\CreateActionAfterPersistEvent;
 use Mediadreams\MdNewsfrontend\Event\CreateActionBeforeSaveEvent;
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 
 /**
  * Class NewsController
@@ -49,6 +52,14 @@ class NewsController extends BaseController
     }
 
     /**
+     * linkRepository
+     *
+     * @var LinkRepository
+     * @inject
+     */
+    public $linkRepository = NULL;
+
+    /**
      * action list
      *
      * @return void
@@ -57,6 +68,11 @@ class NewsController extends BaseController
     {
         if ((int)$this->feuserUid > 0) {
             $news = $this->newsRepository->findByFeuserId($this->feuserUid, (int)$this->settings['allowNotEnabledNews']);
+
+            foreach ($news as $newsItem) {
+            //     $newsItem->canEdit = Utilities::canEditNews($newsItem);
+                var_dump(count($newsItem->getRelatedLinks()));
+            }
 
             $this->assignPagination(
                 $news,
@@ -112,6 +128,8 @@ class NewsController extends BaseController
 
         $newNews->setTxMdNewsfrontendFeuser($this->feuserObj);
 
+        $newNews->setHidden(1);
+
         // add signal slot BeforeSave
         // @deprecated will be removed in TYPO3 v12.0. Use PSR-14 based events and EventDispatcherInterface instead.
         $this->signalSlotDispatcher->dispatch(
@@ -138,6 +156,8 @@ class NewsController extends BaseController
 
         // handle the fileupload
         $this->initializeFileUpload($requestArguments, $newNews);
+
+        $this->handleGtnFields($requestArguments, $newNews);
 
         // add signal slot AfterPersist
         // @deprecated will be removed in TYPO3 v12.0. Use PSR-14 based events and EventDispatcherInterface instead.
@@ -237,6 +257,8 @@ class NewsController extends BaseController
         // handle the fileupload
         $this->initializeFileUpload($requestArguments, $news);
 
+        $this->handleGtnFields($requestArguments, $news);
+
         // add signal slot BeforeSave
         // @deprecated will be removed in TYPO3 v12.0. Use PSR-14 based events and EventDispatcherInterface instead.
         $this->signalSlotDispatcher->dispatch(
@@ -258,6 +280,48 @@ class NewsController extends BaseController
         );
 
         $this->redirect('list');
+    }
+
+    /**
+     *
+     * @param array $requestArguments
+     * @param News $news
+     * @return void
+     */
+    protected function handleGtnFields($requestArguments, $news) {
+        $oldRelatedLinks = $news->getRelatedLinks()->toArray();
+
+        foreach ($requestArguments['related_links'] as $link) {
+            if (!trim($link['uri'])) {
+                continue;
+            }
+
+            /** @var $relatedLink Link */
+            // overwrite existing link or create new one
+            $relatedLink = array_shift($oldRelatedLinks) ?: $this->objectManager->get(\GeorgRinger\News\Domain\Model\Link::class);
+            $relatedLink->setUri($link['uri']);
+            $relatedLink->setTitle($link['title']);
+            $relatedLink->setDescription($link['description']);
+            $relatedLink->setPid($news->getPid());
+
+            if (!$relatedLink->getUid()) {
+                // if not already saved to database (new object), then add it to news
+                $news->addRelatedLink($relatedLink);
+            }
+        }
+
+        // remove all unwanted old links
+        foreach ($oldRelatedLinks as $relatedLink) {
+            $this->linkRepository->remove($relatedLink);
+        }
+
+        if ($requestArguments['submit_for_review']) {
+            // submitted for review!
+
+            $news->setTxMdNewsfrontendSubmittime(time());
+
+            // TODO: email
+        }
     }
 
     public function initializeDeleteAction()

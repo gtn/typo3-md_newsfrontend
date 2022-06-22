@@ -22,6 +22,14 @@ $additionalFields = [
                 ]
             ],
         ]
+    ],
+    'tx_md_newsfrontend_submittime' => [
+        'exclude' => true,
+        'label' => 'Einreichzeitstempel',
+        'config' => [
+            'type' => 'input',
+            // 'default' => 'general',
+        ]
     ]
 ];
 

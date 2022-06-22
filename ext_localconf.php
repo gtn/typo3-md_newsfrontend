@@ -18,7 +18,7 @@ call_user_func(
             ],
             // non-cacheable actions
             [
-                \Mediadreams\MdNewsfrontend\Controller\NewsController::class => 'list, create, update, delete'
+                \Mediadreams\MdNewsfrontend\Controller\NewsController::class => 'list, new, create, edit, update, delete'
             ]
         );
 
