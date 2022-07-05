@@ -18,6 +18,7 @@ namespace Mediadreams\MdNewsfrontend\Controller;
 use DateTime;
 use GeorgRinger\News\Domain\Model\Link;
 use GeorgRinger\News\Domain\Repository\LinkRepository;
+use Gtn\Eeducation\Lib;
 use Mediadreams\MdNewsfrontend\Domain\Model\News;
 use Mediadreams\MdNewsfrontend\Event\CreateActionAfterPersistEvent;
 use Mediadreams\MdNewsfrontend\Event\CreateActionBeforeSaveEvent;
@@ -69,10 +70,10 @@ class NewsController extends BaseController
         if ((int)$this->feuserUid > 0) {
             $news = $this->newsRepository->findByFeuserId($this->feuserUid, (int)$this->settings['allowNotEnabledNews']);
 
-            foreach ($news as $newsItem) {
+            // foreach ($news as $newsItem) {
             //     $newsItem->canEdit = Utilities::canEditNews($newsItem);
-                var_dump(count($newsItem->getRelatedLinks()));
-            }
+            //     var_dump(count($newsItem->getRelatedLinks()));
+            // }
 
             $this->assignPagination(
                 $news,
@@ -320,7 +321,23 @@ class NewsController extends BaseController
 
             $news->setTxMdNewsfrontendSubmittime(time());
 
-            // TODO: email
+	        $username = Lib::getLoginUsername();
+
+	        $email = Lib::email();
+	        $email->setSubject('Neue News wurde eingereicht')
+		        ->html("Uid: {$news->getUid()}<br/>Titel: {$news->getTitle()}<br/>User: {$username}<br/><br/>News befindet sich im Ordner 'News -> BLK Frontend News'");
+
+	        $email->setTo([
+				'andreas.riepl@eeducation.at' => 'Andreas Riepl',
+				'office@eeducation.at' => 'eEducation Office',
+				'dprieler@gtn-solutions.com' => 'Daniel Prieler'
+	        ])->send();
+
+	        $this->addFlashMessage(
+		        'Vielen Dank für Ihren News Beitrag. Nach einer Prüfung werden wir diesen online schalten.',
+		        '',
+		        AbstractMessage::OK
+	        );
         }
     }
 

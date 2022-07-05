@@ -32,6 +32,13 @@
                         ],
                         menubar: false,
                         toolbar: "undo redo | formatselect | link unlink | bold italic | bullist numlist | removeformat",
+                        <f:format.raw>
+                        setup: function (editor) {
+                            editor.on('change', function () {
+                                tinymce.triggerSave();
+                            });
+                        },
+                        </f:format.raw>
                     <f:format.raw>}</f:format.raw>);
                 }
             });
