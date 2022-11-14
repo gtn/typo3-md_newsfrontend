@@ -330,7 +330,7 @@ class NewsController extends BaseController
 	        $email->setTo([
 				'andreas.riepl@eeducation.at' => 'Andreas Riepl',
 				'office@eeducation.at' => 'eEducation Office',
-				'dprieler@gtn-solutions.com' => 'Daniel Prieler'
+				'christoph.froschauer@eeducation.at' => 'Christoph Froschauer'
 	        ])->send();
 
 	        $this->addFlashMessage(

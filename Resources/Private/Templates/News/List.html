@@ -12,38 +12,40 @@
                     <f:render partial="Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
                 </f:if>
 
-                <div class="row">
+                <div class="container-fluid overflow-auto">
                     <f:for each="{pagination.paginator.paginatedItems}" as="newsItem" iteration="i">
-                        <div class="col-sm-7 {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
-                            {newsItem.title}
-                        </div>
-                        <div class="col-sm-2">
-                            <f:if condition="{newsItem.editable}">
-                                <f:then>
-                                    Entwurf
-                                </f:then>
-                                <f:else>
-                                    <f:if condition="{newsItem.hidden}">
-                                        <f:then>
-                                            eingereicht
-                                        </f:then>
-                                        <f:else>
-                                            veröffentlicht
-                                        </f:else>
-                                    </f:if>
-                                </f:else>
-                            </f:if>
-                        </div>
-                        <div class="col-sm-3 text-right {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
-                            <f:if condition="{newsItem.editable}">
-                                <f:link.action action="edit" arguments="{news : newsItem}" class="mr-3" title="{f:translate(key: 'edit')}: {newsItem.title}"><i class="fas fa-pencil-alt"></i> bearbeiten</f:link.action>
-                                <f:link.action action="delete" arguments="{news : newsItem}" class="text-danger delete" additionalAttributes="{data-toggle: 'modal', data-target: '#deleteModal', data-bs-toggle: 'modal', data-bs-target: '#deleteModal'}" title="{f:translate(key: 'delete')}: {newsItem.title}"><i class="fas fa-trash-alt"></i> <f:translate key="delete" /></f:link.action>
-                            </f:if>
+                        <div class="row row-news-list">
+                            <div class="col col-sm-6 {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
+                                {newsItem.title}
+                            </div>
+                            <div class="col col-sm-2">
+                                <f:if condition="{newsItem.editable}">
+                                    <f:then>
+                                       <span class="badge badge-entwurf">Entwurf</span>
+                                    </f:then>
+                                    <f:else>
+                                        <f:if condition="{newsItem.hidden}">
+                                            <f:then>
+                                                <span class="badge badge-Eingereicht">eingereicht</span>
+                                            </f:then>
+                                            <f:else>
+                                                <span class="badge badge-success">veröffentlicht</span>
+                                            </f:else>
+                                        </f:if>
+                                    </f:else>
+                                </f:if>
+                            </div>
+                            <div class="col col-sm-4 text-right {f:if(condition:'{i.isEven}',then:'even',else:'odd')}">
+                                <f:if condition="{newsItem.editable}">
+                                    <f:link.action action="edit" arguments="{news : newsItem}" class="btn-list-newsEdit btn btn-eeducation btn-light" title="{f:translate(key: 'edit')}: {newsItem.title}"><i class="fas fa-pencil-alt"></i> bearbeiten</f:link.action>
+                                    <f:link.action action="delete" arguments="{news : newsItem}" class="btn btn-eeducation btn-delete delete" additionalAttributes="{data-toggle: 'modal', data-target: '#deleteModal', data-bs-toggle: 'modal', data-bs-target: '#deleteModal'}" title="{f:translate(key: 'delete')}: {newsItem.title}"><i class="fas fa-trash-alt"></i> <f:translate key="delete" /></f:link.action>
+                                </f:if>
+                            </div>
                         </div>
                     </f:for>
                 </div>
 
-                <p><f:link.action action="new" class="btn btn-primary"><f:translate key="new" /></f:link.action></p>
+                <p class="mt-4"><f:link.action action="new" class="btn btn-eeducation btn-lg btn-md"><f:translate key="new" /></f:link.action></p>
 
                 <f:if condition="{settings.paginate.insertBelow}">
                     <f:render partial="Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
