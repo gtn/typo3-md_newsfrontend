@@ -328,9 +328,11 @@ class NewsController extends BaseController
 		        ->html("Uid: {$news->getUid()}<br/>Titel: {$news->getTitle()}<br/>User: {$username}<br/><br/>News befindet sich im Ordner 'News -> BLK Frontend News'");
 
 	        $email->setTo([
+                'alexandra.scharl@eeducation.at' => 'Alexandra Scharl',
 				'andreas.riepl@eeducation.at' => 'Andreas Riepl',
 				'office@eeducation.at' => 'eEducation Office',
-				'christoph.froschauer@eeducation.at' => 'Christoph Froschauer'
+				'christoph.froschauer@eeducation.at' => 'Christoph Froschauer',
+				'd@pro-web.at' => 'Daniel Prieler',
 	        ])->send();
 
 	        $this->addFlashMessage(
